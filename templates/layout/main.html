@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/style/normalize.css" />
+    <link rel="stylesheet" href="/static/style/skeleton.css" />
+    <link rel="stylesheet" href="/static/style/style.css" />
+</head>
+    <body>
+    <div class="container">
+        <ul class="navigation">
+            <li class="navigation-item">
+                <a href="/">Start</a>
+            </li>
+            <li class="navigation-item">
+                <a href="/test">Test</a>
+            </li>
+        </ul>
+        <div style="clear: both;">&nbsp;</div>
+
+        {% block content %}{% endblock %}
+    </div>
+    </body>
+</html>
