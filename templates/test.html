@@ -1,0 +1,14 @@
+{% extends "layout/main.html" %}
+
+{% block content %}
+    {% if name != None: %}
+        <h1>Parameter is: {{ param1 }}</h1>
+    {% endif %}
+
+    <form method="get">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name"/>
+        <input type="submit" value="Send"/>
+    </form>
+
+{% endblock %}

@@ -2,8 +2,34 @@
 
 {% block content %}
     <h1>{{ head }}</h1>
-
-    {% for item in items %}
-        <p>{{ item }}</p>
-    {% endfor %}
+    <div class="row">
+        <div class="six columns">
+            <h2>Aktualni hodnoty</h2>
+            <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <th>Velicina</th>
+                        <th>Hodnota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.value }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="six columns">
+        <h2>Predpoved</h2>
+            <p>Text druhe poloviny, kterej je mozno klidne nastavit tabulkou.</p>
+            <p>
+                sda dfs f dfas asdff dsagadfsg dfasdfa fds dasf dsfdsa fdsa fads f
+                dfsfdas fdas fdasfdasfdsfdsafdasfdasf dasfds f dsafas fas fasd fasd
+                f das fasd fdasfdsa fasd fdas fdas fas ds
+            </p>
+        </div>
+    </div>
 {% endblock %}
