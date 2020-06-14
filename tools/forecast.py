@@ -5,6 +5,22 @@ import time
 
 class Forecast:
     api_key = "Your key"
+    temp = 0
+    min_temp = 0
+    max_temp = 0
+    weather = " "
+    feels_like = 0
+    pressure = 0
+    humidity = 0
+    wind_speed = 0
+    wind_direction = 0
+    wind_gust = 0
+    rain_1h = 0
+    clouds = 0
+    country = " "
+    sunrise = 0
+    sunset = 0
+    city = " "
 
     def __init__(self):
         with open("E:\\Programming\\PycharmProjects\\WebServer\\key.txt", "r") as file:
@@ -23,7 +39,7 @@ class Forecast:
             y = x["main"]
             current_temperature = y["temp"] - 273.15
             current_pressure = y["pressure"]
-            current_humidiy = y["humidity"]
+            current_humidity = y["humidity"]
             z = x["weather"]
             weather_description = z[0]["description"]
 
@@ -33,15 +49,49 @@ class Forecast:
                   "\n atmospheric pressure (in hPa unit) = " +
                   str(current_pressure) +
                   "\n humidity (in percentage) = " +
-                  str(current_humidiy) +
+                  str(current_humidity) +
                   "\n description = " +
                   str(weather_description))
             if type == "partial":
-                return current_temperature, current_pressure, current_humidiy, weather_description
+                return current_temperature, current_pressure, current_humidity, weather_description
             elif type == "full":
                 return x
         else:
             print(" City Not Found ")
 
     def parseWeatherForecast(self, forecast):
-        pass
+        y = forecast["main"]
+        self.temp = y["temp"] - 273.15
+        self.min_temp = y["temp_min"] - 273.15
+        self.max_temp = y["temp_max"] - 273.15
+        self.feels_like = y["feels_like"] - 273.15
+        self.pressure = y["pressure"]
+        self.humidity = y["humidity"]
+
+        y = forecast["wind"]
+        self.wind_speed = y["speed"]
+        self.wind_direction = y["deg"]
+        try:
+            self.wind_gust = y["gust"]
+        except KeyError as e:
+            self.wind_gust = "None"
+            print(e)
+
+        try:
+            y = forecast["rain"]
+            self.rain_1h = y["1h"]
+        except KeyError as e:
+            self.rain_1h = "None"
+
+        y = forecast["clouds"]
+        self.clouds = y["all"]
+
+        y = forecast["sys"]
+        self.country = y["country"]
+        self.sunrise = y["sunrise"]
+        self.sunset = y["sunset"]
+
+        self.city = str(forecast["name"])
+
+        z = forecast["weather"]
+        self.weather = z[0]["description"]
