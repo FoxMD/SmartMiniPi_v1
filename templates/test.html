@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if name != None: %}
-        <h1>Parameter is: {{ param1 }}</h1>
+        <h1>City is: {{ param1 }}</h1>
     {% endif %}
 
     <form method="get">
@@ -10,5 +10,22 @@
         <input type="text" name="name" id="name"/>
         <input type="submit" value="Send"/>
     </form>
+
+    <h2>Predpoved</h2>
+        <table class="u-full-width">
+            <thead>
+                <tr>
+                    <th>Velicina</th>
+                    <th>Hodnota</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
 
 {% endblock %}
