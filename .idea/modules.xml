@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/WebServer.iml" filepath="$PROJECT_DIR$/.idea/WebServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SmartMiniPi.iml" filepath="$PROJECT_DIR$/.idea/SmartMiniPi.iml" />
     </modules>
   </component>
 </project>
