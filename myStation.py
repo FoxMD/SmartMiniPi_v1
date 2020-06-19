@@ -8,6 +8,7 @@ import sqlite3
 import digitalio
 import adafruit_bmp280
 import adafruit_max31865
+import threading
 
 # database connection
 database = '/home/pi/Documents/Sensors_Database/betaDB.db'
@@ -29,7 +30,8 @@ t_sensor = adafruit_max31865.Adafruit_MAX31865_SPI(spi, t_cs)
 
 display = lcddriver.lcd()
 
-while True:
+
+def getValues():
     unix = time.time()
     date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
     dPressure = str(p_sensor.pressure)
@@ -37,7 +39,10 @@ while True:
     dHumidity = str(h_sensor.relative_humidity)
     dTime = datetime.datetime.now().time()
     oTemp = str(t_sensor.temperature)
+    threading.Timer(10, getValues).start()
 
+
+def storeValues():
     try:
         conn = sqlite3.connect(database)
         c = conn.cursor()
@@ -50,10 +55,20 @@ while True:
     finally:
         if conn:
             conn.close()
+        threading.Timer(60, storeValues).start()
 
+
+def showValues():
     display.lcd_display_string("Pressure: " + '%.6s' % dPressure + " hPa", 1)
     display.lcd_display_string("Humidity: " + '%.4s' % dHumidity + " %", 2)
     display.lcd_display_string("Temp in:  " + '%.4s' % dTemp + " " + "Time", 3)
     display.lcd_display_string("Temp out: " + '%.4s' % oTemp + " " + '%.5s' % dTime, 4)
-    time.sleep(30)
+    threading.Timer(10, showValues).start()
+    # time.sleep(30)
+
+
+getValues()
+showValues()
+storeValues()
+
 
