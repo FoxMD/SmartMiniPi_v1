@@ -10,6 +10,7 @@ app = Flask(__name__)
 myBase = tools.DBConnector()
 forecast = tools.Forecast()
 item = tools.Item
+point = tools.Graphical
 
 
 @app.route("/info")
@@ -81,6 +82,20 @@ def fromweb():
     ]
 
     return render_template("forecast.html", param1=country, items=forecasted)
+
+
+@app.route("/graphics")
+def graphical():
+    dbtime, temp, hum, press = myBase.getValues()
+
+    measured = [
+        tools.Graphical(20, 10),
+        tools.Graphical(8, 15),
+        tools.Graphical(17, 20),
+        tools.Graphical(13, 25),
+    ]
+
+    return render_template("graphics.html", head="Graf", myValues=measured)
 
 
 @app.route("/")
