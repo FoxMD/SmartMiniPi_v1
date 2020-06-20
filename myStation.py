@@ -32,43 +32,45 @@ display = lcddriver.lcd()
 
 
 def getValues():
-    unix = time.time()
-    date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
+    unixTime = time.time()
+    createdDate = str(datetime.datetime.fromtimestamp(unixTime).strftime('%Y-%m-%d %H:%M:%S'))
     dPressure = str(p_sensor.pressure)
     dTemp = str(p_sensor.temperature)
     dHumidity = str(h_sensor.relative_humidity)
     dTime = datetime.datetime.now().time()
     oTemp = str(t_sensor.temperature)
     threading.Timer(10, getValues).start()
+    return unixTime, createdDate, dPressure, dTemp, dHumidity, dTime, oTemp
 
 
-def storeValues():
+def storeValues(connector, unixtime, mydate, innerTemp, innerHumidity, pressure):
     try:
-        conn = sqlite3.connect(database)
-        c = conn.cursor()
-        c.execute("INSERT INTO stuffToPlot (unix, datestamp, keyword1, value1, keyword2, value2, keyword3, value3) VALUES (?,?,?,?,?,?,?,?)", (unix, date, "Temperature", dTemp, "Humidity", dHumidity, "Pressure", dPressure))
-        conn.commit()
+        connector = sqlite3.connect(database)
+        cursor = connector.cursor()
+        cursor.execute("INSERT INTO stuffToPlot (unix, datestamp, keyword1, value1, keyword2, value2, keyword3, value3) VALUES (?,?,?,?,?,?,?,?)", (unixtime, mydate, "Temperature", innerTemp, "Humidity", innerHumidity, "Pressure", pressure))
+        connector.commit()
     except sqlite3.Error as e:
         print(e)
     except Exception as e:
         print(e)
     finally:
-        if conn:
-            conn.close()
+        if connector:
+            connector.close()
         threading.Timer(60, storeValues).start()
 
 
-def showValues():
+def showValues(dPressure, inTemp, dHumidity, dTime, outTemp):
     display.lcd_display_string("Pressure: " + '%.6s' % dPressure + " hPa", 1)
     display.lcd_display_string("Humidity: " + '%.4s' % dHumidity + " %", 2)
-    display.lcd_display_string("Temp in:  " + '%.4s' % dTemp + " " + "Time", 3)
-    display.lcd_display_string("Temp out: " + '%.4s' % oTemp + " " + '%.5s' % dTime, 4)
+    display.lcd_display_string("Temp in:  " + '%.4s' % inTemp + " " + "Time", 3)
+    display.lcd_display_string("Temp out: " + '%.4s' % outTemp + " " + '%.5s' % dTime, 4)
     threading.Timer(10, showValues).start()
     # time.sleep(30)
 
 
-getValues()
-showValues()
-storeValues()
+unix, date, Pressure, Temp, Humidity, Time, outerTemp = getValues()
+showValues(Pressure, Temp, Humidity, Time, outerTemp)
+storeValues(conn, unix, date, outerTemp, Humidity, Pressure)
+
 
 
