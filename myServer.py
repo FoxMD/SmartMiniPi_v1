@@ -95,7 +95,27 @@ def graphical():
         tools.Graphical(13, 25),
     ]
 
-    return render_template("graphics.html", head="Graf", myValues=measured)
+    pressure = [
+        tools.Graphical(5, 10),
+        tools.Graphical(10, 15),
+        tools.Graphical(15, 20),
+        tools.Graphical(20, 25),
+        tools.Graphical(25, 19),
+    ]
+
+    humidity = [
+        tools.Graphical(7, 10),
+        tools.Graphical(11, 15),
+        tools.Graphical(14, 20),
+        tools.Graphical(19, 25),
+        tools.Graphical(29, 24),
+    ]
+
+    return render_template("graphics.html",
+                           myInTemperature=measured,
+                           myHumidity=humidity,
+                           myPressure=pressure
+                           )
 
 
 @app.route("/")

@@ -1,31 +1,80 @@
 {% extends "layout/main.html" %}
 
 {% block content %}
-    <h1>{{ head }}</h1>
-    <div class="row">
-        <div class="three columns">
+    <style>
+        .group0Style {
+          fill: #f2ea00;
+          fill-opacity: 0;
+          stroke-width: 2px;
+          stroke: #7ae61c;
+        }
 
-        </div>
-        <div class="nine columns">
+        .group1Style {
+          fill: #f2ea00;
+          fill-opacity: 0;
+          stroke-width: 2px;
+          stroke: #ffab00;
+        }
+    </style>
 
-        </div>
-    </div>
+    <h2>Teplota</h2>
     <div id="visualization">
-    <script>
-      var container = document.getElementById('visualization');
-      var items = [
-      {% for item in myValues %}
-        {x: {{ item.x }}, y: {{ item.y }} },
-      {% endfor %}
-      ];
+        <script>
+            var groups = new vis.DataSet();
+            groups.add({id: 0, className: "group0Style"});
+            groups.add({id: 1, className: "group1Style"});
+            var container = document.getElementById('visualization');
+            var items = [
+                {% for item in myInTemperature %}
+                    {x: {{ item.x }}, y: {{ item.y }}, group: 0 },
+                {% endfor %}
 
-      var dataset = new vis.DataSet(items);
-      var options = {
-        start: 0,
-        end: 30
-      };
-      var graph2d = new vis.Graph2d(container, dataset, options);
-    </script>
+                { x: 5, y: 15, group: 1 },
+                { x: 10, y: 30, group: 1 },
+                { x: 15, y: 10, group: 1 },
+                { x: 20, y: 15, group: 1 },
+                { x: 25, y: 52, group: 1 },
+                { x: 30, y: 10, group: 1 },
+            ];
+            var dataset = new vis.DataSet(items);
+            var options = {start: 0, end: 30};
+            var graph2d = new vis.Graph2d(container, items, groups, options);
+        </script>
     </div>
 
+    <div class="row">
+        <div class="six columns", id="visualization2">
+            <h2>Vlhkost</h2>
+            <script>
+                var groups = new vis.DataSet();
+                groups.add({id: 0, className: "group0Style"});
+                var container = document.getElementById('visualization2');
+                var items = [
+                    {% for item in myHumidity %}
+                        {x: {{ item.x }}, y: {{ item.y }}, group: 0 },
+                    {% endfor %}
+                ];
+                var dataset = new vis.DataSet(items);
+                var options = { start: 0, end: 30};
+                var graph2d = new vis.Graph2d(container, items, groups, options);
+            </script>
+        </div>
+
+        <div class="six columns", id="visualization3">
+            <h2>Tlak</h2>
+            <script>
+                var groups = new vis.DataSet();
+                groups.add({id: 0, className: "group0Style"});
+                var container = document.getElementById('visualization3');
+                var items = [
+                    {% for item in myPressure %}
+                        {x: {{ item.x }}, y: {{ item.y }}, group: 0 },
+                    {% endfor %}
+                ];
+                var dataset = new vis.DataSet(items);
+                var options = { start: 0, end: 30};
+                var graph2d = new vis.Graph2d(container, items, groups, options);
+            </script>
+        </div>
+    </div>
 {% endblock %}
